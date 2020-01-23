@@ -33,7 +33,7 @@ plugins:
   - jekyll-seo-tag
 
 header_pages:
-  - intro.md
+  - index.md
   - linux_cmd.md
   - text_op.md
   - machine_admin.md
