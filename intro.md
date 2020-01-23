@@ -55,7 +55,7 @@ Linuxのシステム管理に関わる多くのコマンドはとりあえずは
 
 ### 解説予定の一覧
 
-- Linuxの基本的な操作やコマンド
+- [Linuxの基本的な操作やコマンド](linux_cmd.md)
   - pwd
   - pushd, popd
   - top, kill, jobs
@@ -68,10 +68,10 @@ Linuxのシステム管理に関わる多くのコマンドはとりあえずは
   - ag
   - vim(ターミナルでの作業用の最低限だけ。基本はVSCode推奨という立場）
   - Invoke (Pythonの。makeの代わり)
-- テキスト処理
+- [テキスト処理](text_op.md)
   - grep, sed, awk (awkは基本だけ)
   - head, tail
-- インスタンスのセットアップ周辺（ユーザーとかpermissionもここ）
+- [インスタンスのセットアップ周辺（ユーザーとかpermissionもここ）](machine_admin.md)
   - wgetかcurl
   - du, df, mount (ボリュームの追加とか)
   - apt

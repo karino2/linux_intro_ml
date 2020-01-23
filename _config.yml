@@ -35,6 +35,8 @@ plugins:
 header_pages:
   - intro.md
   - linux_cmd.md
+  - text_op.md
+  - machine_admin.md
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
