@@ -29,8 +29,51 @@
 
 ### 基本コマンドのツアー
 
-cdしたりechoしたりcatしたりリダイレクトしたりする。エラーの例もここで述べておく。
-ヒストリとかC-aやC-eなども述べておく。
+世の中の基本コマンドのチュートリアルは機械学習をやるだけの人には不要なのが多いので、私が適当にピックアップする。
+
+上から順番にやってください。リンク先だけで良いです（次のセクションに行ったりはしなくてOK)。
+
+**pwd, ls, cd に関して**
+
+以下をやる。
+
+- [UNIX Tutorial - 3. Looking around - UC Berkeley School of Information](https://people.ischool.berkeley.edu/~kevin/unix-tutorial/section3.html)
+
+
+**mkdir, rmdir, cp, mv, rm, chmod**
+
+chmodはdockerで-vの下にrootのファイルが出来たりしがちなので、覚えておく。
+
+- [UNIX Tutorial - 4. Managing files and folders - UC Berkeley School of Information](https://people.ischool.berkeley.edu/~kevin/unix-tutorial/section4.html)
+
+
+
+**cat, more, less**
+
+- [UNIX Tutorial - 5. Viewing and editing files - UC Berkeley School of Information](https://people.ischool.berkeley.edu/~kevin/unix-tutorial/section5.html)
+  - 最後のpicoは無視してください。あとでどうせviを最低限覚えるので
+
+
+TODO: ここにパイプの奴を挟む。このサイトはmailコマンドでイマドキじゃないのでもうちょっと普通な奴に直す。
+
+
+**jobsとかpsとかfgとかbgとか、プロセスのコントロール関連**
+
+- [UNIX Tutorial - 11. Viewing processes - UC Berkeley School of Information](https://people.ischool.berkeley.edu/~kevin/unix-tutorial/section11.html)
+- [UNIX Tutorial - 12. Controlling processes - UC Berkeley School of Information](https://people.ischool.berkeley.edu/~kevin/unix-tutorial/section12.html)
+   - niceは使わないのでExercise 12.4まででいいです。
+
+
+TODO: echoが無い。エラー回りのリダイレクトや、ヒストリ、C-aやC-eなどが欲しい。
+TODO: かけてるもの
+
+  - pushd, popd
+  - バッククォートとかhistoryとか
+  - find（ファイル名探すだけ。中身はag使えという事で）
+  - tar
+  - diff
+  - xargs
+
 
 ### 環境変数とか(あとの方がいいか)
 
