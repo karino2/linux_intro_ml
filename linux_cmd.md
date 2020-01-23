@@ -1,24 +1,17 @@
-- Unixのジョブとかの基本操作（bgとかリダイレクトとかバッククォートとかhistoryとか）
-- 基本コマンド
+- Linuxの基本的な操作やコマンド
   - pwd
   - pushd, popd
-  - head, tail
+  - top, kill, jobs
+  - bgとかリダイレクトとかバッククォートとかhistoryとか
+  - pushd, popd
   - find（ファイル名探すだけ。中身はag使えという事で）
-  - diff
   - tar
-  - du, df, mount
+  - diff
   - xargs
-  - top, kill
-  - apt
-- ag
-- wgetかcurl
-- grep, sed, awk (awkは基本だけ)
-- sshと.ssh/configとscpとポートフォワード(Jupyter Notebook用）
-- vim(ターミナルでの作業用の最低限だけ。基本はVSCode推奨という立場）
-- tmux (計算をSIGHUPを無視して走らせ続ける為専用）
-- git
-- docker
-- Invoke (Pythonの。makeの代わり)
+  - ag
+  - vim(ターミナルでの作業用の最低限だけ。基本はVSCode推奨という立場）
+  - Invoke (Pythonの。makeの代わり)
+
 
 機械学習が特徴的な所として、クラウド上での作業が多い、という事が挙げられる。
 その副作用として、環境はすぐに潰して作り直す事が多くなる。
