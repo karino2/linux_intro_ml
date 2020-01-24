@@ -40,7 +40,7 @@
 - [UNIX Tutorial - 3. Looking around - UC Berkeley School of Information](https://people.ischool.berkeley.edu/~kevin/unix-tutorial/section3.html)
 
 
-**mkdir, rmdir, cp, mv, rm, chmod**
+**mkdir, rmdir, cp, mv, rm, chmod（ファイルのモードとかも）**
 
 chmodはdockerで-vの下にrootのファイルが出来たりしがちなので、覚えておく。
 
@@ -53,8 +53,17 @@ chmodはdockerで-vの下にrootのファイルが出来たりしがちなので
 - [UNIX Tutorial - 5. Viewing and editing files - UC Berkeley School of Information](https://people.ischool.berkeley.edu/~kevin/unix-tutorial/section5.html)
   - 最後のpicoは無視してください。あとでどうせviを最低限覚えるので
 
+**パイプとリダイレクト**
 
-TODO: ここにパイプの奴を挟む。このサイトはmailコマンドでイマドキじゃないのでもうちょっと普通な奴に直す。
+UCバークレーの奴はリダイレクト回りがmailコマンドでイマドキじゃないので以下で。
+（誰かもっと広告少ない似たような内容のサイト知ってたら教えてください）
+
+javatpointという所のRedirectionという項目を順番にやっていくのが良さそう。
+
+- [Linux I/O Redirection - javatpoint](https://www.javatpoint.com/linux-input-output-redirection)
+- [Linux Input Redirection - javatpoint](https://www.javatpoint.com/linux-input-redirection)
+- [Linux Output Redirection - javatpoint](https://www.javatpoint.com/linux-output-redirection)
+- [Linux Error Redirection - javatpoint](https://www.javatpoint.com/linux-error-redirection)
 
 
 **jobsとかpsとかfgとかbgとか、プロセスのコントロール関連**
@@ -64,8 +73,8 @@ TODO: ここにパイプの奴を挟む。このサイトはmailコマンドで�
    - niceは使わないのでExercise 12.4まででいいです。
 
 
-TODO: echoが無い。エラー回りのリダイレクトや、ヒストリ、C-aやC-eなどが欲しい。
-TODO: かけてるもの
+TODO: echoが無い。ヒストリ、C-aやC-eなどが欲しい。
+TODO: 漏れてるもの
 
   - pushd, popd
   - バッククォートとかhistoryとか
@@ -73,6 +82,7 @@ TODO: かけてるもの
   - tar
   - diff
   - xargs
+  - vimの基本
 
 
 ### 環境変数とか(あとの方がいいか)
