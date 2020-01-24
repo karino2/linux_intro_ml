@@ -72,8 +72,11 @@ javatpointという所のRedirectionという項目を順番にやっていく�
 - [UNIX Tutorial - 12. Controlling processes - UC Berkeley School of Information](https://people.ischool.berkeley.edu/~kevin/unix-tutorial/section12.html)
    - niceは使わないのでExercise 12.4まででいいです。
 
+### 応用辺
 
-TODO: echoが無い。ヒストリ、C-aやC-eなどが欲しい。
+漏れてる奴を補足する。
+
+TODO: echoが無い。ヒストリ、C-aやC-eなどが欲しい。  
 TODO: 漏れてるもの
 
   - pushd, popd
