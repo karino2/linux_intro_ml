@@ -347,33 +347,312 @@ pushdは、実行した時にその時点のディレクトリをディレクト
 ~/hoge/fuga/ika$
 ```
 
-## あとで書く
+### find
 
-  - バッククォートとか`$()`とか
-  - find（ファイル名探すだけ。中身はag使えという事で）
-  - xargs
+ディレクトリの中を再帰的にファイルを探す時に使うのがfindです。
+良く使うのは名前が一致するファイルです。
+
+```
+find 開始するディレクトリ -name 名前のパターン
+```
+
+が基本的な使い方で、「開始するディレクトリ」より下を再帰的に探します。
+
+例えば`/etc`の下の、拡張子が`.sh`なファイルを探すには以下。
+
+```
+$ find /etc -name "*.sh"
+/etc/console-setup/cached_setup_font.sh
+/etc/console-setup/cached_setup_keyboard.sh
+/etc/console-setup/cached_setup_terminal.sh
+...
+```
+
+（なお、幾つか開けないディレクトリのエラーも出ると思います）
+
+このように、特定のディレクトリの下のファイルを探し出すのに使うのがfindです。
+ちなみに.shの拡張子のファイルはシェルスクリプトです。
+
+なお、「いつ以降に作られたファイル」とかいう条件でも探せますが、機械学習ではあんまり使わないので必要になったらググりましょう。
+
+### xargsと組み合わせる
+
+findのもう一つ良く使う使い方としては、xargsと組み合わせて特定のファイルに大して何かを実行する、というのがあります。
+
+例えば、/etcの下の各シェルスクリプトの先頭10行を表示したいとします。
+つまり、
+
+```
+$ find /etc -name "*.sh"
+/etc/console-setup/cached_setup_font.sh
+/etc/console-setup/cached_setup_keyboard.sh
+/etc/console-setup/cached_setup_terminal.sh
+...
+```
+
+となるなら、`/etc/console-setup/cached_setup_font.sh`にheadをして、
+次に`/etc/console-setup/cached_setup_keyboard.sh`にheadをして、、、とやっていきたい訳ですね。
+
+`find /etc -name "*.sh"`でファイルの一覧が表示されるのだからheadをパイプでつなげれば良いか？と`find /etc -name "*.sh" | head`とすると、
+
+```
+$ find /etc -name "*.sh" | head
+/etc/console-setup/cached_setup_font.sh
+/etc/console-setup/cached_setup_keyboard.sh
+/etc/console-setup/cached_setup_terminal.sh
+/etc/init.d/console-setup.sh
+/etc/init.d/hwclock.sh
+/etc/init.d/keyboard-setup.sh
+/etc/profile.d/01-locale-fix.sh
+/etc/profile.d/Z97-byobu.sh
+/etc/profile.d/Z99-cloud-locale-test.sh
+/etc/profile.d/Z99-cloudinit-warnings.sh
+```
+
+と、findの結果の先頭10行が表示されてしまいました。（エラー出力が混ざって見づらいかもしれないので`find /etc -name "*.sh" 2>/dev/null | head`とする方がいいかも）
+
+やりたいのは、`/etc/console-setup/cached_setup_font.sh`にheadをして`/etc/console-setup/cached_setup_keyboard.sh`にheadをして、、、とそれぞれの行を「コマンドライン引数」にheadを呼びたい。
+
+でもパイプではfindの結果を「標準入力」にheadが呼ばれてしまいます。
+
+「標準入力」の各行をコマンドライン引数として渡してくれるコマンドをxargsといいます。
+以下のように実行すると、
+
+```
+$ find /etc -name "*.sh" | xargs head
+```
+
+findの結果を一行読んでheadを呼び出し、次の行を読んでまたheadを呼び出し、、、というk十をしてくれます。つまり以下のような事をしてくれます。
+
+```
+$ head /etc/console-setup/cached_setup_font.sh
+$ head /etc/console-setup/cached_setup_keyboard.sh
+$ head /etc/console-setup/cached_setup_terminal.sh
+$ head /etc/init.d/console-setup.sh
+....
+```
+
+なお、最初の5個のファイルに対してtailを呼び出す、なら以下のようにすれば良い。
+
+```
+$ find /etc -name "*.sh" | head -n 5 | xargs tail
+```
+
+やってみてください。
+
+ちなみに、grepと組み合わせるのも良く使います。
+上記のシェルスクリプトの中からexportを探してみましょう。
+
+```
+$ find /etc -name "*.sh" | xargs grep export
+```
+
+grepについてはあとでやります。上記のxargsは
+
+```
+$ grep export /etc/console-setup/cached_setup_font.sh
+$ grep export /etc/console-setup/cached_setup_keyboard.sh
+$ grep export /etc/console-setup/cached_setup_terminal.sh
+$ grep export /etc/init.d/console-setup.sh
+...
+```
+
+のように最後に各行をつけて呼んだのと同じ結果になります。
+
+ただこの辺であんまり凝った事をやりたい、と悩み始めたら、もうJupyterのPython上でやる事を検討すべき領域に踏み込んでいます。Jupyter上でglobとシェルコマンドを組み合わせる方がきっと良い選択でしょう。
 
 
-### その他のコマンド
-  - head, tail
-  - ln
-  - top
-  - tar
-  - diff
-  - vimの基本(テキスト処理でexコマンドをちょっとやる)
+## その他の雑多なコマンド
+
+以上に含まれない、単純だがとりあえず知っておいた方がいいコマンドを並べておきます。
+
+### head, tail
+
+ファイルの先頭10行を表示するのがheadで、最後の10行を表示するのがtailです。
+
+```
+# ヒストリの先頭10行を表示
+$ history | head -n 3
+```
+
+また、この10行というのはnオプションで変えられます。
+
+```
+# ヒストリの先頭3行を表示
+$ history | head -n 3
+```
+
+```
+# ヒストリの最後5行を表示
+$ history | tail -n 5
+```
+
+また、機械学習で良く使うtailの使い方に、-Fオプションというのがあります。
+これはファイルを開きっぱなしにして、変更があったら最後の数行を表示する、という物です。
+長い初期化が走る学習などで、ログファイルをtail -Fで開いたまま待つ、というのが良くやられます。
+
+Fオプションの具体例はtmuxを説明したあとに解説します。
+
+### top
+
+psと似たような物ですが、はっついて進捗を確認するのに使います。
+終わるにはqを押します。いろいろ表示去れますが機械学習屋は`%MEM`と`%CPU`しか見ません。
+
+長い計算を走らせた時に、本当に走っているのか？というのを確認して安心する為や、なんだか知らないけど凄く遅くなった時に何で遅くなっているのか、という時に使います。
+
+top自体も結構遅いし本当は他のコマンド使った方がいい場合も結構あるのですが、機械学習屋はあんまり細かい事を気にせずいつもtopを使って、それで分からない時は諦めます。
+
+### tar
+
+ディレクトリを圧縮して一つのファイルにするのに使います。本当は圧縮じゃなくてアーカイブだとかうるさい事言う人は適当にスルーしておきます。
 
 
-### 環境変数とか(あとの方がいいか)
+圧縮
+```
+$ tar cvzf ファイル名.tgz ターゲットディレクトリ
+```
 
-環境変数とは何か、とか、子プロセスがどうなるか、とか変数とかの話とか。
-.bashrcとかの話もここでしておく。
+これで「ターゲットディレクトリ」を圧縮して「ファイル名.tgz」というファイルにします。
+ここで「ファイル名.tgz」の指定を忘れると「ターゲットディレクトリ」の中身が壊れるという酷い罠のあるコマンドなので慎重に使ってください。
 
-### モードとかユーザーとか
+例としては以下みたいな使い方です。
+まず圧縮するディレクトリを適当に作ります。
 
-chownとかchmodとかwo am iとかユーザーとか。
-コンテナ上でルートで作業した時にvmountしているファイルのパミッションが変わる話とかをする。
-xargsとか使って一気にchmodしたり。
+```
+$ mkdir -p data/hoge/ika/fuga
+$ pushd data/hoge/ika/fuga; echo hello > data.txt; popd
+```
+そして以下のようなコマンドを実行します。
 
-上記の4. Managing files and foldersに一通りの話があるので補足する感じで。
+```
+$ tar cvzf data.tgz data/
+```
 
-（あとのインスタンス構築の方がいいかも）
+こうして固めたdata.tgzを後述するscpなどで送ったりします。
+
+解凍はcの代わりにxを使います。
+
+```
+$ tar xzvf data.tgz
+```
+
+各オプションの意味とかは知らなくていいです。圧縮はcvzf、解凍はxzvf。圧縮の時にはファイル名の指定を忘れないように気を付けましょう。
+
+### diff
+
+二つのテキストファイルのうち、違う行だけを表示します。
+ちょっと例を作るのが面倒なので使い方だけ。
+
+```
+$ diff file1 file2
+```
+
+これでfile1とfile2を一行ずつ比較して、違う行だけ表示します。
+
+### ln
+
+シンボリックリンクとハードリンクを作ります。
+コマンドの詳細は以下を参照の事。
+
+[【 ln 】コマンド――ファイルのハードリンクとシンボリックリンクを作る：Linux基本コマンドTips（16） - ＠IT](https://www.atmarkit.co.jp/ait/articles/1605/30/news022.html)
+
+
+シンボリックリンクは、ファイルの別名を作るのに使います。
+機械学習だとそんなには使いません。
+
+最近朝会社に来るといつも同じディレクトリにcdする所から始まるなぁ、という時に、そこへのディレクトリをホームディレクトリにシンボリックリンクを貼る、というのが自分が良く使うシンボリックリンクの使い方です。
+
+私はworkという名前にする事が多いですが好きな名前にしてください（mという名前にしている人を見た）。
+例えばさきほどのtarと同じdataというディレクトリがあるとすると、
+
+```
+$ ln -s data/hoge/ika/fuga work
+```
+
+とすると、workというシンボリックリンクが出来て、この中にcd出来ます。
+
+```
+$ ls -l
+drwxrwxrwx 1 karino2 karino2 512 Jan 26 19:22 data
+lrwxrwxrwx 1 karino2 karino2  18 Jan 26 19:31 work -> data/hoge/ika/fuga
+
+$ cd work
+~/work$ ls
+data.txt
+```
+
+エイリアスを作る人もいるのですが、インスタンスをつぶす事が多いので基本コマンド自体は揃えておかないと無意識に打ってしまってストレスフルなので、シンボリックリンクを作るくらいがいいんじゃないか、というのが自分の結論。
+
+次にハードリンク。
+
+ハードリンクの方が機械学習では出番が多いでしょう。
+ハードリンクは上記の-sがついていないバージョンです。
+
+```
+ln ファイル名 リンク名
+```
+
+たとえば
+
+```
+$ echo 1 > 1.txt
+$ ln 1.txt othername.txt
+```
+
+とすると、othername.txtと1.txtというのは、同じデータに対する二つのファイルになります。
+たとえばothername.txtに値を追加すると、1.txtの方にもそれが反映されています。
+
+```
+$ echo 3 >> othername.txt
+$ cat 1.txt
+1
+3
+```
+
+1.txtを消してもハードディスクからはデータは削除されず、othername.txtも削除して初めてハードディスクから消えます。
+
+ハードリンクとは、同じデータに二つのファイル名をつける、という事になります。
+シンボリックリンクと違ってどっちが元のファイルか、という区別はありません。
+一つのデータに完全に同等の、別のパスが作られる事になります。
+どちらを開いても良いし、片方を変更したらもう片方も変更されます（というより同じデータを指しているという方が言い方としては正しい）。
+
+機械学習での使い方としては、だいたいどこかのディレクトリにpngファイルとかが何万枚もあって、これをカテゴリごとにカテゴリidのついたディレクトリに分けたい、という時に使います。
+コピーと違って一瞬で終わるので大量のデータがある時に便利。
+
+kerasのImageDataGeneratorでflow_from_directoryを使う為にデータをカテゴリのディレクトリに分ける、という場合に使います。
+
+複数のカテゴリの分け方で実験したい事は結構あるので、ハードリンクを使うのが良い。
+
+例はちょっと人工的な例になりますが、以下みたいな感じです。
+
+データセットアップ。
+
+```
+$ mkdir text_data
+$ cd text_data
+~/text_data $ echo a > a.txt
+~/text_data $ echo b > b.txt
+~/text_data $ echo c > c.txt
+~/text_data $ echo d > d.txt
+~/text_data $ echo e > e.txt
+~/text_data $ ls
+a.txt  b.txt  c.txt  d.txt  e.txt
+```
+
+次に、カテゴリ1がa.txt, c.txt、カテゴリ2がb.txt、 カテゴリ3がd.txtとe.txtとすると、
+以下のような操作をします。
+```
+~/text_data $ mkdir 1
+~/text_data $ mkdir 2
+~/text_data $ mkdir 3
+~/text_data $ ln a.txt 1/a.txt
+~/text_data $ ln c.txt 1/c.txt
+~/text_data $ ln b.txt 2/b.txt
+~/text_data $ ln d.txt 3/d.txt
+~/text_data $ ln e.txt 3/e.txt
+```
+
+こうすると、1にa.txtとc.txtが、2にb.txtが、3にd.txtとe.txtが入ります。
+これはコピーと異なりハードディスクの容量も消費しないし、一瞬で終わります。
+消すのも一瞬です。
+
