@@ -73,7 +73,7 @@ javatpointという所のRedirectionという項目を順番にやっていく�
 - [Linux Error Redirection - javatpoint](https://www.javatpoint.com/linux-error-redirection)
 
 
-### jobsとかpsとかfgとかbgとか、プロセスのコントロール関連
+### jobsとかpsとかtopとかfgとかbgとか、プロセスのコントロール関連
 
 - [UNIX Tutorial - 11. Viewing processes - UC Berkeley School of Information](https://people.ischool.berkeley.edu/~kevin/unix-tutorial/section11.html)
 - [UNIX Tutorial - 12. Controlling processes - UC Berkeley School of Information](https://people.ischool.berkeley.edu/~kevin/unix-tutorial/section12.html)
@@ -422,7 +422,7 @@ $ find /etc -name "*.sh" | head
 $ find /etc -name "*.sh" | xargs head
 ```
 
-findの結果を一行読んでheadを呼び出し、次の行を読んでまたheadを呼び出し、、、というk十をしてくれます。つまり以下のような事をしてくれます。
+findの結果を一行読んでheadを呼び出し、次の行を読んでまたheadを呼び出し、、、という事を繰り返してくれます。つまり以下のような事をしてくれます。
 
 ```
 $ head /etc/console-setup/cached_setup_font.sh
@@ -463,6 +463,8 @@ $ grep export /etc/init.d/console-setup.sh
 
 また、ちょっとしたサイズなら何も考えずに後述のagを使って全部検索してしまう方が手軽と思います。
 
+実用的な例はテキスト処理でsedが終わったあとに幾つか説明します（たぶん）。
+
 ## その他の雑多なコマンド
 
 以上に含まれない、単純だがとりあえず知っておいた方がいいコマンドを並べておきます。
@@ -493,15 +495,6 @@ $ history | tail -n 5
 長い初期化が走る学習などで、ログファイルをtail -Fで開いたまま待つ、というのが良くやられます。
 
 Fオプションの具体例はtmuxを説明したあとに解説します。
-
-### top
-
-psと似たような物ですが、はっついて進捗を確認するのに使います。
-終わるにはqを押します。いろいろ表示されますが機械学習屋は`%MEM`と`%CPU`しか見ません。
-
-長い計算を走らせた時に、本当に走っているのか？というのを確認して安心する為や、なんだか知らないけど凄く遅くなった時に何で遅くなっているのか、という時に使います。
-
-top自体も結構遅いし本当は他のコマンド使った方がいい場合も結構あるのですが、機械学習屋はあんまり細かい事を気にせずいつもtopを使って、それで分からない時は諦めます。
 
 ### tar
 
