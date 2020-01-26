@@ -54,7 +54,7 @@ $ echo "Hello  World"
 例えば以下でHOGEという変数が出来ます。
 
 ```
-HOGE=abc
+$ HOGE=abc
 ```
 
 これでHOGEという変数にabcという文字列が入ります。
