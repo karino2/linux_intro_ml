@@ -56,21 +56,13 @@ Linuxのシステム管理に関わる多くのコマンドはとりあえずは
 ### 解説予定の一覧
 
 - [Linuxの基本的な操作やコマンド](linux_cmd.md)
-  - pwd
-  - pushd, popd
-  - top, kill, jobs
-  - bgとかリダイレクトとかバッククォートとかhistoryとか
-  - pushd, popd
-  - find（ファイル名探すだけ。中身はag使えという事で）
-  - tar
-  - diff
-  - xargs
-  - ag
-  - vim(ターミナルでの作業用の最低限だけ。基本はVSCode推奨という立場）
-  - Invoke (Pythonの。makeの代わり)
+  - cdとかpushdとかfindとかxargsとか
+- [環境構築に必要最低限のシェル入門](shell_intro.md)
+  - 変数展開とかバッククオートとか
 - [テキスト処理](text_op.md)
   - grep, sed, awk (awkは基本だけ)
   - head, tail
+  - vim(ターミナルでの作業用の最低限だけ。基本はVSCode推奨という立場）
 - [インスタンスのセットアップ周辺（ユーザーとかpermissionもここ）](machine_admin.md)
   - wgetかcurl
   - du, df, mount (ボリュームの追加とか)
@@ -78,6 +70,10 @@ Linuxのシステム管理に関わる多くのコマンドはとりあえずは
   - chmodとか
   - sshと.ssh/configとscpとポートフォワード(Jupyter Notebook用）
   - tmux (計算をSIGHUPを無視して走らせ続ける為専用）
+- その他のインストールが必要なコマンド
+  - agはここに入れる
+  - tmux（こちらには詳細を）
+  - Invoke (Pythonの。makeの代わり)
 - git
 - docker
 
