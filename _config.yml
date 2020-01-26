@@ -35,6 +35,7 @@ plugins:
 header_pages:
   - index.md
   - linux_cmd.md
+  - shell_intro.md
   - text_op.md
   - machine_admin.md
 
