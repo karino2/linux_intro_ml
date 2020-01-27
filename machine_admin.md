@@ -3,7 +3,7 @@
   - wgetかcurl
   - du, df, mount (ボリュームの追加とか)
   - apt
-  - chmodとか
+  - chownとか
   - sshと.ssh/configとscpとポートフォワード(Jupyter Notebook用）
   - tmux (計算をSIGHUPを無視して走らせ続ける為専用）
 - docker
