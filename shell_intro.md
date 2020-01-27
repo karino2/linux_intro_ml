@@ -4,11 +4,16 @@ layout: page
 ---
 
 機械学習屋は通常のシスアドほどはシェルに詳しい必要はありません。
+
 ですがコンテナとインスタンスの設定は凄くしょっちゅうやる事になるので、
 簡単なトラブルシューティングは自分で出来る方が良いです。
+また、大きな学習データを扱うのにシェルを使うケースもちょこちょこ出てきます。
 
 ここではそうした事を踏まえて、機械学習で必要な程度のシェルの入門をしたいと思います。
 
+良くある設定として、以下が理解出来るくらいを目指します。（これは私のインスタンスの設定用スクリプトです）
+
+- [GCP Setup, debian, non gpu](https://gist.github.com/karino2/347f40df3b95a1de77fec240d45b3fde#file-setup-sh-L28-L29)
 
 # いろいろなクオートと変数の展開
 
@@ -104,8 +109,94 @@ ${HOGE}ika
 
 ### バッククオートと`$()`
 
+シェルスクリプトにはさらに、バッククオート、つまり`\``でくくる、というのがあります。
+バッククオートはプログラム以外ではあまり使わないのでキーボード上で探さないといけない人もいるかもしれませんね。（なお私の手元のキーボードではシフトを押しながらアットマークのキーでした）
+
+バッククオートで囲まれた部分は、「その中をシェルスクリプトとして、子プロセスで実行し、そこで得られた標準出力で置き換える」という機能になります。
+
+言葉にするとややこしいので例をみましょう。
+
+まず一番簡単なのがechoを使う例です。
+
+```
+$ echo hoge_`echo ika`_fuga
+hoge_ika_fuga
+```
+
+バッククオートの中は`echo ika`なので、これを実行した結果の標準出力、つまり`ika`で展開されます。
+
+もう少し他の例も見て見ましょう。例えば以下みたいなスクリプトを実行してみましょう。
+
+```
+~$ echo hoge_`cd /etc; pwd`_fuga
+hoge_/etc_fuga
+~$
+```
+
+バッククオートの中は`cd /etc; pwd`なので標準出力には/etcでpwdした結果、つまり`/etc`が得られるでしょう。
+
+ここで着目して欲しいのは、呼び出し元のシェルでは作業ディレクトリが/etcになってない、という所です。
+バッククオートの中は子プロセスとして実行されるので、呼び出し元のシェルには影響がありません。
+だからこの中でcdしても問題が無い。
+
+なお、バッククオートの他に`$(シェルのコマンド)`という記法もあって、効果は一緒です。
+つまり上記のechoは`echo hoge_$(cd /etc; pwd)_fuga`と書いても良い。
+複数行に渡る場合はこちらが多く使われるようです。
+
+### 実際の例
+
+dockerのサイトからインストール方法を調べると、以下のようなスクリプトを実行せよ、と書かれています。（[GCP Setup, debian, non gpu](https://gist.github.com/karino2/347f40df3b95a1de77fec240d45b3fde)にも入っています）
+
+```
+curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg | sudo apt-key add -
+```
+
+curlやapt-keyなどはおいといて、URLの部分はここで学んだ知識が使われていますね。
+curlはやめてechoにしてみましょう。
+
+```
+$ echo https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")
+https://download.docker.com/linux/ubuntu
+```
+
+私の環境ではubuntuと展開されるようです。
+`$()`の中を見るとドットで始まっています。これは解説してないですが、引数のファイルを現在のシェルで実行する、という機能です。実行されるシェルスクリプトを見てみましょう。
+
+```
+$ cat /etc/os-release
+NAME="Ubuntu"
+VERSION="18.04.3 LTS (Bionic Beaver)"
+ID=ubuntu
+ID_LIKE=debian
+PRETTY_NAME="Ubuntu 18.04.3 LTS"
+VERSION_ID="18.04"
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+VERSION_CODENAME=bionic
+UBUNTU_CODENAME=bionic
+```
+
+どうやらこのLinuxがどういうディストリビューションか、とか、バージョンとかが書かれているようですね。これらは変数として代入されていきます。そしてこのスクリプトを実行したあとに`echo $ID`を実行しているので、このファイルに書かれているIDが展開された結果が標準出力に出るのでしょう。
+
+せっかくなので試しにこの仮説があっているかを確認してみましょう。
+
+```
+$ . /etc/os-release
+$ echo $ID
+ubuntu
+```
+
+あってそうですね。
+
+なお、`$()`の中は子プロセスで実行されるので、元のスクリプトではechoしたあとにはこの変数は消えているはずです。
+
+このようにURLやファイルのパスの一部を作ったり、コマンドラインの引数の一部を使うのにバッククオートや`$()`は良く使われます。
 
 # 環境変数入門
+
+
 
 環境変数とは何か、とか、子プロセスがどうなるか、とか。
 .bashrcとかの話もここでしておくか？
@@ -116,7 +207,7 @@ chownとかchmodとかwo am iとかユーザーとか。
 コンテナ上でルートで作業した時にvmountしているファイルのパミッションが変わる話とかをする。
 xargsとか使って一気にchmodしたり。
 
-4. Managing files and foldersに一通りの話があるので補足する感じで。
+基本コマンドの方のManaging files and foldersに一通りの話があるので補足する感じで。
 
 
 # シェルスクリプト入門
