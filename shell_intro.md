@@ -15,6 +15,11 @@ layout: page
 
 - [GCP Setup, debian, non gpu](https://gist.github.com/karino2/347f40df3b95a1de77fec240d45b3fde#file-setup-sh-L28-L29)
 
+幾つかの例は実際の自分のスクリプトから持ってきた物ですが、説明してないコマンドなども多く出てきます。
+コマンドが何をしているのかが分からなくても説明している項目は理解出来るはずです。
+
+実務でも全てのコマンドを知っているという事は稀です。例えばDockerの公式サイトにあったインストール手順のスクリプトをそのままコピペする時など、知らないコマンドを実行するケースは良くあると思います。
+そういう時に、何かトラブルが起きたら、まず分かる部分にだけ着目する、というのはトラブルシュートの第一歩となります。
 
 # いろいろなクオートと変数の展開
 
@@ -430,7 +435,7 @@ Pythonのos.systemモジュールを使って実行しても同様です。
 まずファイルを作ります。（上記1と2）
 
 ```
-$ echo "#!/bin/sh" > hello.sh
+$ echo '#!/bin/sh' > hello.sh
 $ echo  >> hello.sh
 $ echo 'echo "Hello World"' >> hello.sh
 $ cat hello.sh
@@ -440,12 +445,28 @@ echo "Hello World"
 ```
 
 次に実行属性をつけます。
+実行属性はコマンド入門の[UNIX Tutorial - 4. Managing files and folders - UC Berkeley School of Information](https://people.ischool.berkeley.edu/~kevin/unix-tutorial/section4.html)で少し出てきたchmodを使います。
+
+この時点では、hello.shの属性は以下のようになっています。
+
+```
+$ ls -l hello.sh
+-rw-rw-rw- 1 karino2 karino2 30 Jan 28 19:47 hello.sh
+```
+
+オーナーとグループとその他に、それぞれreadとwriteの権限がついています。実行属性（xで表される）がついていません。
+
+実行属性をつけるには+xを使います。
 
 ```
 $ chmod +x hello.sh
+$ ls -l hello.sh
+-rwxrwxrwx 1 karino2 karino2 30 Jan 28 19:47 hello.sh
 ```
 
+xがついたのが分かると思います。
 これでシェルスクリプトは完成です。
+
 実行はフルパスを指定すれば普通のコマンドのように実行出来ます。
 また、`./`をつけて相対指定でも実行出来ます。
 
@@ -453,3 +474,32 @@ $ chmod +x hello.sh
 $ ./hello.sh
 Hello World
 ```
+
+### コメントはシャープ
+
+
+まずコメントはシャープ記号で、シャープ記号があるとそのシャープより後ろがコメントになります。
+ただし先頭の`#!/bin/sh`だけは特別でコメントではありません。
+
+例えば以下のようになっていると、最後の行は無視されます。
+
+```
+#!/bin/sh
+
+echo "Hello World"
+# This line is comment
+```
+
+### 複数行に分割したい場合は改行の直前にバックスラッシュ（環境によっては円記号）
+
+複数の行にまたがる事をやりたい場合は改行の直前にバックスラッシュでエスケープします。
+
+```
+#!/bin/sh
+
+#これはls -lと同じ
+ls \
+-l
+```
+
+
