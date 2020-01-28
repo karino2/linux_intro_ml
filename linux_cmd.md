@@ -33,6 +33,7 @@ layout: page
 結果として、なるべく設定はしない環境で使う方が望ましい。
 このなるべく設定無しで作業する、ということを踏まえて、Linuxのコマンドの勉強もなるべく省エネでやっていくのが良い。
 
+
 # 基本コマンドのツアー
 
 世の中の基本コマンドのチュートリアルは機械学習をやるだけの人には不要なのが多いので、私が適当にピックアップする。
@@ -45,15 +46,12 @@ layout: page
 
 - [UNIX Tutorial - 3. Looking around - UC Berkeley School of Information](https://people.ischool.berkeley.edu/~kevin/unix-tutorial/section3.html)
 
-
 ### mkdir, rmdir, cp, mv, rm, chmod（ファイルのモードとかも）
 
 chmodはdockerで-vの下にrootのファイルが出来たりしがちなので、覚えておく。
 
 - [UNIX Tutorial - 4. Managing files and folders - UC Berkeley School of Information](https://people.ischool.berkeley.edu/~kevin/unix-tutorial/section4.html)
    - mdirはpオプションも使います。以下の応用編の「コマンドをつなげてみよう」を参考のこと。
-
-
 
 ### cat, more, less
 
@@ -72,18 +70,19 @@ javatpointという所のRedirectionという項目を順番にやっていく�
 - [Linux Output Redirection - javatpoint](https://www.javatpoint.com/linux-output-redirection)
 - [Linux Error Redirection - javatpoint](https://www.javatpoint.com/linux-error-redirection)
 
-
 ### jobsとかpsとかtopとかfgとかbgとか、プロセスのコントロール関連
 
 - [UNIX Tutorial - 11. Viewing processes - UC Berkeley School of Information](https://people.ischool.berkeley.edu/~kevin/unix-tutorial/section11.html)
 - [UNIX Tutorial - 12. Controlling processes - UC Berkeley School of Information](https://people.ischool.berkeley.edu/~kevin/unix-tutorial/section12.html)
    - niceは使わないのでExercise 12.4まででいいです。
 
+
 # 応用辺
 
 上記で漏れてる、機械学習の実務をしてて自分（や菊田さん）が使った奴を補足します。
 コマンドはオプションが多いですが、まずは良く使う奴だけをセットで覚えて使っていくのがオススメです。
 必要に応じておいおい調べていきます。
+
 
 ## コマンドライン操作
 
@@ -126,6 +125,7 @@ World
 上記二つを実行したあとに、C-pを二回とか押して、C-nを一回押したりしてみてください。
 これでC-pとC-nは分かると思います。
 
+
 ### C-rとその周辺
 
 選択中の良く使うコマンド
@@ -164,6 +164,7 @@ C-rを押すと、まずchoと入力すると、`echo World`が一致するは�
 これは過去に実行したコマンドの一部を編集したい時に使います。
 
 また、`ESC`で明示的に選択しなくても検索の途中に`C-e`などをやっても似たような結果になります。やってみてください。
+
 
 ### historyコマンド
 
@@ -205,6 +206,7 @@ World
 
 [15 Linux Bash History Expansion Examples You Should Know](https://www.thegeekstuff.com/2011/08/bash-history-expansion/)
 
+
 ## コマンドをつなげてみよう
 
 複数のコマンドをつなげて一度に実行出来るのがコマンドラインの良い所です。
@@ -227,6 +229,7 @@ $ mkdir -p hoge/ika/fuga/
 ```
 
 これでhogeというディレクトリの下にikaというディレクトリが出来、その中にfugaというディレクトリが出来ます。
+
 
 ### pushd, popd, dirsとディレクトリスタック
 
@@ -269,6 +272,7 @@ pushd [目的のフォルダ] && [何か作業をいろいろ] && popd
 $ pushd hoge/ika/fuga && echo "Hello World" > hello.txt && popd
 ```
 
+
 ### `&&`と`;`の違い
 
 コマンドを複数実行する場合、セミコロンとアンパサンド二つの二つのつなげ方があります。
@@ -291,6 +295,7 @@ $ pushd wronghoge/ika/fuga ; echo "Hello World" > hello.txt ; popd
 最初のpushdが失敗したあとも実行が続き、hello.txtが現在のディレクトリに出来ます。
 どっちが良いかはケースバイケースで、だいたいはエラーが出てる時点でどっちもダメです。
 トラブルシュートがしやすい方を選べばOK。
+
 
 ### ディレクトリスタックの補足
 
@@ -374,6 +379,7 @@ $ find /etc -name "*.sh"
 ちなみに.shの拡張子のファイルはシェルスクリプトです。
 
 なお、「いつ以降に作られたファイル」とかいう条件でも探せますが、機械学習ではあんまり使わないので必要になったらググりましょう。
+
 
 ### xargsと組み合わせる
 
@@ -465,6 +471,7 @@ $ grep export /etc/init.d/console-setup.sh
 
 実用的な例はテキスト処理でsedが終わったあとに幾つか説明します（たぶん）。
 
+
 ## その他の雑多なコマンド
 
 以上に含まれない、単純だがとりあえず知っておいた方がいいコマンドを並べておきます。
@@ -496,10 +503,10 @@ $ history | tail -n 5
 
 Fオプションの具体例はtmuxを説明したあとに解説します。
 
+
 ### tar
 
 ディレクトリを圧縮して一つのファイルにするのに使います。本当は圧縮じゃなくてアーカイブだとかうるさい事言う人は適当にスルーしておきます。
-
 
 圧縮
 ```
@@ -532,6 +539,7 @@ $ tar xvzf data.tgz
 
 各オプションの意味とかは知らなくていいです。圧縮はcvzf、解凍はxvzf。圧縮の時にはファイル名の指定を忘れないように気を付けましょう。
 
+
 ### diff
 
 二つのテキストファイルのうち、違う行だけを表示します。
@@ -554,6 +562,7 @@ $ history | wc
 
 一番左が行数。オプションで-lをつけると行数だけになります。
 
+
 ### ln
 
 シンボリックリンクとハードリンクを作ります。
@@ -561,6 +570,8 @@ $ history | wc
 
 [【 ln 】コマンド――ファイルのハードリンクとシンボリックリンクを作る：Linux基本コマンドTips（16） - ＠IT](https://www.atmarkit.co.jp/ait/articles/1605/30/news022.html)
 
+
+**シンボリックリンク**
 
 シンボリックリンクは、ファイルの別名を作るのに使います。
 機械学習だとそんなには使いません。
@@ -587,6 +598,9 @@ data.txt
 ```
 
 エイリアスを作る人もいるのですが、インスタンスをつぶす事が多いので基本コマンド自体は揃えておかないと無意識に打ってしまってストレスフルなので、シンボリックリンクを作るくらいがいいんじゃないか、というのが自分の結論。
+
+
+**ハードリンク**
 
 次にハードリンク。
 
