@@ -13,7 +13,7 @@ layout: page
 
 良くある設定として、以下が理解出来るくらいを目指します。（これは私のインスタンスの設定用スクリプトです）
 
-- [GCP Setup, debian, non gpu](https://gist.github.com/karino2/347f40df3b95a1de77fec240d45b3fde#file-setup-sh-L28-L29)
+- [GCP Setup, debian, non gpu](https://gist.github.com/karino2/347f40df3b95a1de77fec240d45b3fde)
 
 幾つかの例は実際の自分のスクリプトから持ってきた物ですが、説明してないコマンドなども多く出てきます。
 コマンドが何をしているのかが分からなくても説明している項目は理解出来るはずです。
