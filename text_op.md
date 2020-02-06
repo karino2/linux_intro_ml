@@ -577,3 +577,22 @@ jupyter-notebook --ip=10.138.0.76
 
 citation.csvとかを実際に触ってみる。
 
+https://bulkdata.uspto.gov/data/patent/office/actions/bigdata/2017/
+
+450MBくらい。一応以下のコマンドで落とせるはずだが、
+
+```
+wget https://bulkdata.uspto.gov/data/patent/office/actions/bigdata/2017/citations.csv.zip
+```
+
+WSLではめっちゃ遅いのでブラウザで落とした。
+
+```
+$ sudo apt install unzip
+$ unzip citations.csv.zip
+$ ls -l citations.csv
+-rwxrwxrwx 1 karino2 karino2 2460472008 Nov 16  2017 citations.csv
+```
+
+2.4Gbくらい。まぁまぁでかい。
+
