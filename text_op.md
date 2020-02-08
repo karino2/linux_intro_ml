@@ -582,7 +582,7 @@ USの特許データ自体になじみが無いとそれぞれのカラムの数
 
 今回は、以下のcitations.csvとかを実際に触ってみます。
 
-https://bulkdata.uspto.gov/data/patent/office/actions/bigdata/2017/
+[https://bulkdata.uspto.gov/data/patent/office/actions/bigdata/2017/](https://bulkdata.uspto.gov/data/patent/office/actions/bigdata/2017/)
 
 450MBくらい。一応以下のコマンドで落とせるはずだけれど、
 
