@@ -637,7 +637,9 @@ app_id,citation_pat_pgpub_id,parsed,ifw_number,action_type,action_subtype,form89
 $ cat citations.csv | sed -n '10000,10005p'
 ```
 
-う、表示したあと帰ってこない。Ctrl-Cで中断してもいいのだけど、1万5行目で終わるようにheadを挟むのが良さそう。
+う、表示したあと帰ってこない。
+これは1万5行目よりあともずーっと読み込み続けるからだ。
+Ctrl-Cで中断してもいいのだけど、1万5行目で終わるようにheadを挟むのが良さそう。
 
 ```
 $ cat citations.csv | head -n 10005 | sed -n '10000,10005p'
