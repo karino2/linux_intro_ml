@@ -580,6 +580,8 @@ USの特許データ自体になじみが無いとそれぞれのカラムの数
 テキスト処理としては簡単な事の組み合わせなので理解は出来るでしょうし、
 皆もそれぞれの分野で似たような事をやった経験はあるはずです。
 
+なお、新しいコマンドとかは出てこないつもりなので、意味が分からなければ飛ばして次に行っても構いません。
+
 今回は、以下のcitations.csvとかを実際に触ってみます。
 
 [https://bulkdata.uspto.gov/data/patent/office/actions/bigdata/2017/](https://bulkdata.uspto.gov/data/patent/office/actions/bigdata/2017/)
